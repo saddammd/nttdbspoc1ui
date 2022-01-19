@@ -1,0 +1,181 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    </head>
+           <body>
+                <div class="container ">
+                     <!-- Adding Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" routerLink="/home">Home</a>
+                        </li>
+                        <li class="nav-item" >
+                            <a [hidden] ="maxRoleValue.roleName != 'ADMIN' && maxRoleValue.roleName !='SUPERUSER'" class="nav-link active" aria-current="page" href="#" data-bs-toggle="modal"
+                            data-bs-target="#addRetailerModal" >Add Retailer</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-2" #searchbox type="search" #searchbox (keydown.enter)=assignSearchValue($event.target.value) 
+                        (keydown.enter)="searchRetailer()" (focusout)=assignSearchValue(searchbox.value) placeholder="Search" aria-label="Search">
+                        <button class="btn btn-success" type="submit" (click)=searchRetailer()>Search</button>
+                    </form>
+                    <ul class="navbar-nav mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" routerLink="/logout"
+                            routerLinkActive="active-link" (click)="logout()">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Closing of Navbar -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box no-header clearfix">
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                <th><span>Retailer Name</span></th>
+                                <th><span>Location</span></th>
+                                <th [hidden] ="maxRoleValue.roleName != 'ADMIN' && maxRoleValue.roleName !='SUPERUSER'"><span>Action</span></th>
+                                <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor = "let tempRetailersList of retailersArray">
+                                <tr>
+                                    <td>{{tempRetailersList.retailerName}}</td>   
+                                    <td>{{tempRetailersList.location}}</td>
+                                    <td style="width: 20%;">
+                                        <a [hidden] ="maxRoleValue.roleName != 'ADMIN' && maxRoleValue.roleName !='SUPERUSER'" href="#" class="table-link  text-info" data-bs-toggle="modal"
+                                        data-bs-target="#editRetailerModal" (click)=getRetailerDetail(tempRetailersList.retailerId)>                                 <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+                                        <a [hidden] ="maxRoleValue.roleName !='ADMIN'" href="#" class="table-link danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteRetailerModal" (click)=getRetailerId(tempRetailersList.retailerId)>                                           <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Add Retailer Modal -->
+                        <div class="modal fade" id="addRetailerModal" tabindex="-1"
+                        aria-labelledby="retailerModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="retailerModalLabel">Add Retailer</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form #retailerForm="ngForm">
+                                        <div class="form-group">
+                                            <label for="productName">Retailer Name</label>
+                                            <input type="text" class="form-control" #retailerName=ngModel required="required" minlength="2"
+                                                name="retailerName" [(ngModel)]=addRetailers.retailerName>
+                                                <div class="error" *ngIf="retailerName.touched && !retailerName.valid" required="required">Retailer name is mandatory atleast 2 characters are required</div>
+                                                
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="category">Location</label>
+                                            <input type="text" class="form-control" #location=ngModel required="required" minlength="2"
+                                                name="location" [(ngModel)]=addRetailers.location>
+                                                <div class="error" *ngIf="location.touched && !location.valid" required="required">Location is mandatory atleast 2 characters are required</div>
+                                                
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="close-modal-addretailer" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="button" [disabled]=!retailerForm.valid class="btn btn-primary" (click)=addRetailer()>Add Retailer</button>
+                                        </div>
+                                    
+                                    </form>
+                                </div>
+                               </div>
+                        </div>
+                    </div>
+                    <!-- End of Add Retailer Modal-->
+
+                     <!-- Edit Retailer Modal -->
+                     <div class="modal fade" id="editRetailerModal" tabindex="-1"
+                     aria-labelledby="retailerModalLabel" aria-hidden="true">
+                     <div class="modal-dialog">
+                         <div class="modal-content">
+                             <div class="modal-header">
+                                 <h5 class="modal-title" id="retailerModalLabel">Edit Retailer</h5>
+                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                     aria-label="Close"></button>
+                             </div>
+                             <div class="modal-body">
+                                 <form #editretailerForm="ngForm">
+                                     <div class="form-group">
+                                         <label for="retailerName">Retailer Name</label>
+                                         <input type="text" class="form-control" #rname=ngModel required="required" minlength="2"
+                                             name="rname" [(ngModel)]="retailer.retailerName">
+                                             <div class="error" *ngIf="rname.touched && !rname.valid" required="required">Retailer Name is mandatory atleast 2 characters are required</div>
+                                               
+                                     </div>
+                                     <div class="form-group">
+                                         <label for="elocation">Location</label>
+                                         <input type="text" class="form-control" #elocation=ngModel required="required" minlength="2"
+                                             name="elocation" [(ngModel)]="retailer.location">
+                                             <div class="error" *ngIf="elocation.touched && !elocation.valid" required="required">Location is mandatory atleast 2 characters are required</div>                                            
+                                     </div>
+                                     <div class="modal-footer">
+                                        <button type="button" id="close-modal-editretailer" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" [disabled]="!editretailerForm.valid" class="btn btn-primary" (click)=saveUpdateRetailerChanges()>Save Changes</button>
+                                    </div>
+                                
+                                 </form>
+                             </div>
+                            </div>
+                     </div>
+                 </div>
+                 <!-- End of Edit Retailer Modal-->
+
+                  <!-- Delete Product Modal -->
+                  <div class="modal fade" id="deleteRetailerModal" tabindex="-1" aria-labelledby="deleteRetailerModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="deleteRetailerModalLabel">Delete Product</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <p>Are You Sure Do You Want To Delete This Retailer</p>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" id="close-modal-delete" class="btn btn-secondary"
+                                  data-bs-dismiss="modal">No</button>
+                              <button type="button" class="btn btn-danger"
+                                  (click)=deleteRetailer()>Yes</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- End of Delete Product Modal -->
+          
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                </div>
+            </body>
+</html>

@@ -1,0 +1,229 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            <p class="text-center"> NTTDBS-POC 1 </p>
+        </h1>
+
+        <!-- Adding Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" routerLink="/home">Home</a>
+                        </li>
+                        <div [hidden]="maxRoleValue.roleName != 'ADMIN' && maxRoleValue.roleName !='SUPERUSER'">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#addProductModal">Add Product</a>
+                            </li>
+                        </div>
+
+                        <li class="nav-item">
+                            <a [hidden]="maxRoleValue.roleName!='ADMIN'" class="nav-link active" aria-current="page"
+                                routerLink="/users" routerLinkActive="active-link">User Management</a>
+                        </li>
+
+
+                    </ul>
+
+                    <form class="d-flex">
+                        <input class="form-control me-2" #searchbox
+                            (keydown.enter)=assignSearchValue($event.target.value) (keydown.enter)="searchProduct()"
+                            (focusout)=assignSearchValue(searchbox.value) type="search" placeholder="Search"
+                            aria-label="Search">
+                        <button class="btn btn-success" type="submit" (click)="searchProduct()">Search</button>
+                    </form>
+                    <ul class="navbar-nav mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" routerLink="/logout"
+                                routerLinkActive="active-link" (click)="logout()">Logout</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+        <!-- Closing of Navbar -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="main-box no-header clearfix">
+                    <div class="main-box-body clearfix">
+                        <div class="table-responsive">
+                            <table class="table user-list" matSort (matSortChange)="sortData($event)">
+                                <thead>
+                                    <tr>
+                                        <th mat-sort-header="productName"><span>Product Name</span></th>
+                                        <th mat-sort-header="price"><span>Price</span></th>
+                                        <th mat-sort-header="category"><span>Category</span></th>
+                                        <th><span>Retailers</span></th>
+                                        <th
+                                            [hidden]="maxRoleValue.roleName != 'ADMIN' && maxRoleValue.roleName !='SUPERUSER'">
+                                            <span>Action</span>
+                                        </th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let tempProductsList of products; index as i">
+                                    <tr>
+                                        <td>{{tempProductsList.productName}}</td>
+                                        <td>{{tempProductsList.price}}</td>
+                                        <td>{{tempProductsList.category}}</td>
+                                        <td><a routerLink="/retailers/{{tempProductsList.id}}"
+                                                routerLinkActive="active-link"
+                                                (click)="getProductId(tempProductsList.id)">View Retailers</a></td>
+                                        <td style="width: 20%;">
+                                            <a [hidden]="maxRoleValue.roleName != 'ADMIN' && maxRoleValue.roleName !='SUPERUSER'"
+                                                href="#" class="table-link  text-info" (click)="editProduct(i)"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                            <a [hidden]="maxRoleValue.roleName !='ADMIN'" href="#"
+                                                class="table-link danger" (click)="getProductId(tempProductsList.id)"
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- Add Product Modal -->
+                            <div class="modal fade" id="addProductModal" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form #productForm="ngForm">
+                                                <div class="form-group">
+                                                    <label for="productName">Product Name</label>
+                                                    <input type="text" required="required" minlength="2" class="form-control" #productName=ngModel
+                                                        name="productName" [(ngModel)]=addProductValue.productName>
+                                                        <div class="error" *ngIf="productName.touched && !productName.valid" required="required">Product name is mandatory atleast 2 characters are required</div>
+                                   
+                                                </div>
+                                                <div class="form-group" [class.has-error]="price.invalid && price.touched">
+                                                    <label for="Price">Price</label>
+                                                    <input type="text" required="required" pattern="^[0-9]*$" class="form-control" #price=ngModel name="Price"
+                                                        [(ngModel)]=addProductValue.price>
+                                                        <div class="error" *ngIf="price.errors?.required && price.touched" required="required">Price is mandatory</div>
+                                                        <div class="error" *ngIf="price.errors?.pattern && price.touched" required="required">Invalid Price</div>
+                             
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="category">Category</label>
+                                                    <input type="text" required="required" minlength="2" class="form-control" #category=ngModel
+                                                        name="category" [(ngModel)]=addProductValue.category>
+                                                        <div class="error" *ngIf="category.touched && !category.valid" required="required">Product category is mandatory atleast 2 characters are required</div>
+                                                                                   
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" id="close-modal3" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary" [disabled]=!productForm.valid
+                                                        (click)="addProduct(addProductValue)">Add Product</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End of Add Product Modal-->
+
+                            <!-- Product Update Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form #editproductForm="ngForm">
+                                                <div class="form-group">
+                                                    <label for="editproductName">Product Name</label>
+                                                    <input type="text" class="form-control" #editproductName=ngModel required="required" minlength="2"
+                                                        name="editproductName" [(ngModel)]=editProductValue.productName>
+                                                        <div class="error" *ngIf="editproductName.touched && !editproductName.valid" required="required">Product name is mandatory atleast 2 characters are required</div>
+                                                </div>
+        
+                                                <div class="form-group" [class.has-error]="editprice.invalid && editprice.touched">
+                                                    <label for="editprice">Price</label>
+                                                    <input type="text" class="form-control" pattern="^[0-9]*$" name="editprice" required="required" #editprice=ngModel 
+                                                    [(ngModel)]=editProductValue.price>
+                                                    <div class="error" *ngIf="editprice.errors?.required && editprice.touched" required="required">Price is mandatory</div>
+                                                    <div class="error" *ngIf="editprice.errors?.pattern && editprice.touched" required="required">Invalid Price</div>
+                         
+
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="editcategory">Category</label>
+                                                    <input type="text" class="form-control" #editcategory=ngModel required="required" minlength="2"
+                                                        name="editcategory" [(ngModel)]=editProductValue.category>
+                                                        <div class="error" *ngIf="editcategory.touched && !editcategory.valid" required="required">Product category is mandatory atleast 2 characters are required</div>
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" id="close-modal" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" [disabled]="!editproductForm.valid" class="btn btn-primary" (click)="updateProduct()">Save
+                                                            changes</button>
+                                                    </div>
+                                            </form>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End of Update Product Modal-->
+
+
+                            <!-- Delete Product Modal -->
+                            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel">Delete Product</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are You Sure Do You Want To Delete This Product</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="close-modal2" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">No</button>
+                                            <button type="button" class="btn btn-danger"
+                                                (click)=deleteProduct()>Yes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End of Delete Product Modal -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

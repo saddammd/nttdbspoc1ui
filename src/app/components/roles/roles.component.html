@@ -1,0 +1,105 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            <p class="text-center"> NTTDBS-POC 1 </p>
+        </h1>
+        <!-- Adding Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" routerLink="/home">Home</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" routerLink="/users">Users Management</a>
+                        </li>
+
+
+                        <ul class="navbar-nav mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" routerLink="/logout"
+                                    routerLinkActive="active-link" (click)="logout()">Logout</a>
+                            </li>
+                      </ul>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+        <table class="table user-list">
+            <thead>
+                <tr>
+                <th><span>User Name</span></th>
+                <th><span>Roles</span></th>
+                <th><span>Authority</span></th>
+                <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <td>{{email}}</td>
+                <td>
+                    <form #rolesForm ="ngForm">
+                  <div>
+                     <input class="form-check-input" type="checkbox" value="ADMIN" id="flexCheckChecked" name="admincheckbox" [(ngModel)]="adminChecked"
+                     (change)=onChangeAdmin()>
+                    <label class="form-check-label" for="flexCheckChecked">
+                      ADMIN
+                    </label>
+                </div>
+
+                <div>
+                    <input class="form-check-input" type="checkbox" value="SUPERUSER" id="flexCheckChecked" name="superusercheckbox" [(ngModel)]="superuserChecked" (change)=onChangeSuperUser() >
+                    <label class="form-check-label" for="flexCheckChecked">
+                      SUPERUSER
+                    </label>
+                </div>
+
+                <div>
+                    <input class="form-check-input"  type="checkbox" value="USER" id="flexCheckChecked" name="usercheckbox" [(ngModel)]="userChecked" (change)=onChangeUser()>
+                    <label class="form-check-label" for="flexCheckChecked">
+                      USER
+                    </label>
+                </div>
+                <button type="button" class="btn btn-primary" [disabled]="!rolesForm.dirty" (click)="updateUserRoles()"
+                data-bs-toggle="modal" data-bs-target="#messageModal">Save Changes</button>
+        
+
+            </form>
+                </td>
+                <td>
+                    <div><li>read/write/delete</li>
+                
+                    <li>read/write</li>
+                    
+                    <li>read</li></div>
+                </td>
+            </tbody>
+         </table>
+
+         <div class="modal" id="messageModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Message</h5>
+                </div>
+                <div class="modal-body">
+                  <p>User Roles Have Updated.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)=closeModal()>OK</button>
+                    <button type="button" id=close-modal class="btn btn-secondary" hidden=true data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </body>
+</html>

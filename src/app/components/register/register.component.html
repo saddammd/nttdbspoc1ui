@@ -1,0 +1,64 @@
+<div class="container h-100">
+    <div class="row h-100">
+        <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+            <div class="d-table-cell align-middle">
+
+                <div class="text-center mt-4">
+                    <h1 class="h1">NTTDBS-POC1</h1>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="m-sm-4">
+                            <form  #registerForm = ngForm (ngSubmit)=onSubmit()>
+                                <h4 class="text-center">USER REGISTRATION</h4>
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input class="form-control form-control-lg" type="text" #name=ngModel name= name [(ngModel)] = register.name required="required" minlength="2" placeholder="Enter your name">
+                                    <div class="error" *ngIf="name.touched && !name.valid" required="required">Name is mandatory atleast 2 characters are required</div>
+                                </div>
+
+                                <div class="form-group" [class.has-error]="mobile.invalid && mobile.touched">
+                                    <label>Mobile</label>
+                                    <input class="form-control form-control-lg" type="tel" #mobile=ngModel name= mobile [(ngModel)] = register.mobile pattern="^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$" required="required" placeholder="Enter your mobile number">
+                                    <div class="error" *ngIf="mobile.touched && !mobile.valid" required="required">Invalid Mobile No.</div>
+                                </div>
+                                <div class="form-group" [class.has-error]="email.invalid && email.touched">
+                                    <label>Email</label>
+                                    <input class="form-control form-control-lg" type="email"  pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$" required="required" #email=ngModel name= email [(ngModel)] = register.email placeholder="Enter your email">
+                                    <div class="error" *ngIf="email.errors?.required && email.touched"  required="required">Email is required</div>
+                                    <div class="error" *ngIf="email.errors?.pattern && email.touched"  required="required">Invalid Email</div>
+                                </div>
+                                <div class="form-group" [class.has-error]="password.invalid && password.touched">
+                                    <label>Password</label>
+                                    <input class="form-control form-control-lg" 
+                                    type="password" 
+                                    pattern="^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"
+                                    required="required" 
+                                    #password=ngModel 
+                                    name= password 
+                                    [(ngModel)] = register.password 
+                                    placeholder="Enter password">
+                                    <div class="error" *ngIf="password.errors?.required && password.touched" required="required">Password is required</div>
+                                    <div class="error" *ngIf="password.errors?.pattern && password.touched" required="required">
+                                      Password must be at least 10 characters, must contain at least one one lower case letter, 
+                                      one upper case letter, one digit and one special character valid special characters are -   @#$%^&+=
+                                    </div>
+
+                                </div>
+                                <div class="text-center mt-3">
+                                    <button [disabled]=!registerForm.valid type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                                </div>
+                                <div class="clearfix">
+                                    <!--  <a href="#" class="float-right">Forgot Password?</a> -->
+                                      <a routerLink="/login" class="float-right">Already have an account? Login</a>
+                                  </div>     
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
