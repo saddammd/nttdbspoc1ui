@@ -5,10 +5,10 @@ const path = require('path');
 const app = express();
 
 // Serve only the static files form the dist directory
-app.use(express.static(path.join(__dirname, 'nttdbs-poc1/dist/nttdbs-poc1')));
+app.use(express.static(path.join(__dirname, '/dist/nttdbs-poc1')));
 
 app.get('*', (req, res) => {
-    res.sendFile(`./nttdbs-poc1/dist/nttdbs-poc1/index.html`); // load the single view file (angular will handle the page changes on the front-end)
+    res.sendFile(`./dist/nttdbs-poc1/index.html`); // load the single view file (angular will handle the page changes on the front-end)
 });
 
 //app.get('/*', function(req,res) {
