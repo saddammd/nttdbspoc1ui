@@ -10,7 +10,7 @@ import { Register } from '../classes/register';
 export class RegisterService {
 
 
-  registerbaseUrl:string = environment.retailersbaseUrl;
+  registerbaseUrl:string = environment.registerbaseUrl;
 
   constructor(private http: HttpClient) { }
 

@@ -8,7 +8,8 @@ export const environment = {
   productsbaseUrl: 'http://localhost:5000/poc/products',
   registerbaseUrl: 'http://localhost:5000/poc/register',
   retailersbaseUrl: 'http://localhost:5000/poc/retailers/',
-  rolesbaseUrl: 'http://localhost:5000/poc/userRoles/'
+  rolesbaseUrl: 'http://localhost:5000/poc/userRoles/',
+  loginbaseUrl: 'http://localhost:5000/poc/login',
 };
 
 /*
