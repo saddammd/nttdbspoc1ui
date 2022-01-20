@@ -19,7 +19,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import {GoogleLoginProvider} from 'angularx-social-login';
-import { DummyComponent } from './components/dummy/dummy.component';
 
 const routes: Routes = [
   { path: 'retailers/:id', component:RetailersListComponent,canActivate:[AuthGuard] },
@@ -29,8 +28,8 @@ const routes: Routes = [
   { path: 'login', component:LoginComponent},
   { path: 'logout', component:LogoutComponent},
   { path: 'register', component:RegisterComponent},
-  { path: 'dummy', component:DummyComponent},
-  { path: '', component:ProductsListComponent,canActivate:[AuthGuard]}
+  { path: '', component:ProductsListComponent,canActivate:[AuthGuard]},
+  { path: '**', component:ProductsListComponent,canActivate:[AuthGuard]}
 ];
 
 @NgModule({
@@ -42,8 +41,7 @@ const routes: Routes = [
     LoginComponent,
     LogoutComponent,
     RegisterComponent,
-    RolesComponent,
-    DummyComponent
+    RolesComponent
   ],
   imports: [
     BrowserModule,
