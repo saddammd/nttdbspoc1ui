@@ -42,11 +42,9 @@ export class ProductsListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log("The role name is " +this.maxRoleValue.roleName);
     this.getProductsList();
     this.getUserRoles();
-    console.log("The role name is " +this.maxRoleValue.roleName);
-  
+    
   }
 
      addProduct(productvalues: Product){
@@ -114,6 +112,7 @@ export class ProductsListComponent implements OnInit {
         this.roles = result;
         this.sortedRoles = this.roles.sort(this.compare);
         this.maxRoleValue = this.sortedRoles[this.sortedRoles.length-1];
+        console.log("max value is" +this.maxRoleValue);
         }
     );
   }
