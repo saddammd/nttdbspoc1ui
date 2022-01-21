@@ -41,6 +41,7 @@ export class ProductsListComponent implements OnInit {
 
   ngOnInit(): void {
 
+    console.log("The role name is " +this.maxRoleValue.roleName);
     this.getProductsList();
     this.getUserRoles();
     console.log("The role name is " +this.maxRoleValue.roleName);
