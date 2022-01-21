@@ -43,7 +43,6 @@ isLogged: boolean;
         data=>{
           this.socialUser = data;
           this.token = this.socialUser.idToken;
-          console.log(this.token);
           localStorage.setItem('token', this.token);
           this.isLogged = true;
           this.loginService.loggedInUseremail = this.userLogged.email;

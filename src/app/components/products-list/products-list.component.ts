@@ -43,6 +43,7 @@ export class ProductsListComponent implements OnInit {
 
     this.getProductsList();
     this.getUserRoles();
+    console.log("The role name is " +this.maxRoleValue.roleName);
   
   }
 
