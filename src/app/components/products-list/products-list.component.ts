@@ -111,11 +111,13 @@ export class ProductsListComponent implements OnInit {
         
         this.roles = result;
         let val = Math.max.apply(Math,this.roles.map(function(o){return o.roleId}));
+        console.log("val value is " +val);
         for(let arr of this.roles){
           if(arr.roleId == val){
             this.maxRoleValue = arr;
           }
         }
+        console.log("The max role value received" +this.maxRoleValue);
         }
     );
   }
@@ -127,11 +129,13 @@ export class ProductsListComponent implements OnInit {
         
         this.roles = result;
         let val = Math.max.apply(Math,this.roles.map(function(o){return o.roleId}));
+        console.log("val value is " +val);
         for(let arr of this.roles){
           if(arr.roleId == val){
             this.maxRoleValue = arr;
           }
         }
+        console.log("The max role value received" +this.maxRoleValue);
         }
     );
   }
