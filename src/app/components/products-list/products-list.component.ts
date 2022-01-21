@@ -111,6 +111,7 @@ export class ProductsListComponent implements OnInit {
       result=>{ 
         
         this.roles = result;
+        console.log("Hello before value");
         let val = Math.max.apply(Math,this.roles.map(function(o){return o.roleId}));
         console.log("val value is " +val);
         for(let arr of this.roles){
@@ -129,6 +130,7 @@ export class ProductsListComponent implements OnInit {
       result=>{ 
         
         this.roles = result;
+        console.log("Hello before value");
         let val = Math.max.apply(Math,this.roles.map(function(o){return o.roleId}));
         console.log("val value is " +val);
         for(let arr of this.roles){
