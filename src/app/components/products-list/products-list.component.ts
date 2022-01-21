@@ -107,6 +107,7 @@ export class ProductsListComponent implements OnInit {
      }
 
   getloginUserRoles(){
+    console.log(0);
     this.rolesService.getUserRoles(this.loginService.loginvalues.username).subscribe(
       result=>{ 
         this.roles = result;
@@ -122,6 +123,7 @@ export class ProductsListComponent implements OnInit {
 
   getGoogleUserRoles(){
     this.loginService.loginvalues.username = this.loginService.loggedInUseremail;
+    console.log(0);
     this.rolesService.getUserRoles(this.loginService.loginvalues.username).subscribe(
       result=>{ 
         this.roles = result;
