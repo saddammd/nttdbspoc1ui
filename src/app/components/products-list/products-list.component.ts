@@ -128,6 +128,7 @@ export class ProductsListComponent implements OnInit {
       result=>{ 
         this.roles = result;
         console.log(1);
+        console.log(this.roles);
         this.sortedRoles = this.roles.sort(this.compare);
         console.log(2);
         this.maxRoleValue = this.sortedRoles[this.sortedRoles.length-1];  
