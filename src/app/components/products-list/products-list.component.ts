@@ -25,7 +25,8 @@ export class ProductsListComponent implements OnInit {
   search:string;
   editProductValue:Product = new Product();
   addProductValue:Product = new Product();
-  public roles:Roles[];
+  roles:Roles[];
+  sortedRoles: Roles[];
   maxRoleValue:Roles;
   
   
@@ -110,17 +111,9 @@ export class ProductsListComponent implements OnInit {
   getloginUserRoles(){
     this.rolesService.getUserRoles(this.loginService.loginvalues.username).subscribe(
       result=>{ 
-        
         this.roles = result;
-        console.log("Hello before value");
-        let val = Math.max.apply(Math,this.roles.map(function(o){return o.roleId}));
-        console.log("val value is " +val);
-        for(let arr of this.roles){
-          if(arr.roleId == val){
-            this.maxRoleValue = arr;
-          }
-        }
-        console.log("The max role value received" +this.maxRoleValue);
+        this.sortedRoles = this.roles.sort(this.compare);
+        this.maxRoleValue = this.sortedRoles[this.sortedRoles.length-1];
         }
     );
   }
@@ -129,17 +122,9 @@ export class ProductsListComponent implements OnInit {
     this.loginService.loginvalues.username = this.loginService.loggedInUseremail;
     this.rolesService.getUserRoles(this.loginService.loginvalues.username).subscribe(
       result=>{ 
-        
         this.roles = result;
-        console.log("Hello before value");
-        let val = Math.max.apply(Math,this.roles.map(function(o){return o.roleId}));
-        console.log("val value is " +val);
-        for(let arr of this.roles){
-          if(arr.roleId == val){
-            this.maxRoleValue = arr;
-          }
-        }
-        console.log("The max role value received" +this.maxRoleValue);
+        this.sortedRoles = this.roles.sort(this.compare);
+        this.maxRoleValue = this.sortedRoles[this.sortedRoles.length-1];   
         }
     );
   }
@@ -176,7 +161,15 @@ export class ProductsListComponent implements OnInit {
      this.router.navigate(['/login']);
    }
 
-   
+   compare(a:Roles, b:Roles) {
+    if ( a.roleId < b.roleId ){
+      return -1;
+    }
+    if ( a.roleId > b.roleId ){
+      return 1;
+    }
+    return 0;
+  }
 
 
 
@@ -206,6 +199,7 @@ export class ProductsListComponent implements OnInit {
     this.getSortedList();
   }
 }
+
 
 function compare(a: number | string, b: number | string, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
