@@ -110,8 +110,11 @@ export class ProductsListComponent implements OnInit {
     this.rolesService.getUserRoles(this.loginService.loginvalues.username).subscribe(
       result=>{ 
         this.roles = result;
+        console.log(1);
         this.sortedRoles = this.roles.sort(this.compare);
+        console.log(2);
         this.maxRoleValue = this.sortedRoles[this.sortedRoles.length-1];
+        console.log(3);
         console.log("max value is" +this.maxRoleValue);
         }
     );
@@ -122,8 +125,12 @@ export class ProductsListComponent implements OnInit {
     this.rolesService.getUserRoles(this.loginService.loginvalues.username).subscribe(
       result=>{ 
         this.roles = result;
+        console.log(1);
         this.sortedRoles = this.roles.sort(this.compare);
-        this.maxRoleValue = this.sortedRoles[this.sortedRoles.length-1];   
+        console.log(2);
+        this.maxRoleValue = this.sortedRoles[this.sortedRoles.length-1];  
+        console.log(3);
+        console.log("max value is" +this.maxRoleValue); 
         }
     );
   }
