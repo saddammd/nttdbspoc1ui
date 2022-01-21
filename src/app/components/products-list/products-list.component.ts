@@ -127,7 +127,6 @@ export class ProductsListComponent implements OnInit {
     this.rolesService.getUserRoles(this.loginService.loginvalues.username).subscribe(
       result=>{ 
         this.roles = result;
-        console.log(1);
         console.log("roles" +this.roles);
         this.sortedRoles = this.roles.sort(this.compare);
         console.log(2);
