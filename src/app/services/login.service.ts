@@ -19,16 +19,17 @@ export class LoginService {
 
   login(login:Login): Observable<any> {
     this.loginvalues=login;
+    
     return this.http.post<Login>(`${this.baseUrl}`, login, {responseType: 'text' as 'json'});
   }
 
   isLoggedIn():boolean{
-   let tokenPresence:boolean = !!localStorage.getItem("token");
+   let tokenPresence:boolean = !!localStorage.getItem('token');
    return tokenPresence;
   }
 
   getToken(){
-    return localStorage.getItem("token");
+    return localStorage.getItem('token');
   }
 
 }

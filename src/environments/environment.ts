@@ -4,12 +4,21 @@
 
 export const environment = {
   production: false,
-  usersbaseUrl: 'http://localhost:5000/poc/',
+ /* usersbaseUrl: 'http://3.109.194.186.nip.io/poc/',
+  productsbaseUrl: 'http://3.109.194.186.nip.io/poc/products',
+  registerbaseUrl: 'http://3.109.194.186.nip.io/poc/register',
+  retailersbaseUrl: 'http://3.109.194.186.nip.io/poc/retailers/',
+  rolesbaseUrl: 'http://3.109.194.186.nip.io/poc/userRoles/',
+  loginbaseUrl: 'http://3.109.194.186.nip.io/poc/login',
+  */
+
+ usersbaseUrl: 'http://localhost:5000/poc/',
   productsbaseUrl: 'http://localhost:5000/poc/products',
   registerbaseUrl: 'http://localhost:5000/poc/register',
   retailersbaseUrl: 'http://localhost:5000/poc/retailers/',
   rolesbaseUrl: 'http://localhost:5000/poc/userRoles/',
   loginbaseUrl: 'http://localhost:5000/poc/login',
+
 };
 
 /*

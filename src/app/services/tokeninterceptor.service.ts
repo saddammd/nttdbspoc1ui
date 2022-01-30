@@ -13,7 +13,7 @@ export class TokeninterceptorService implements HttpInterceptor{
   constructor(private router: Router) { }
   intercept(req, next) {
     let tokenizeRequest = req.clone({
-      setHeaders: {Authorization: `Bearer ${localStorage.getItem("token")}`}
+      setHeaders: {Authorization: `Bearer ${localStorage.getItem('token')}`}
       //setHeaders: {Authorization: `Bearer ${sessionStorage.getItem("token")}`}
     });
     
@@ -29,6 +29,7 @@ export class TokeninterceptorService implements HttpInterceptor{
   }
 
   private handleAuthError() {
+    console.log("Auth error in token interceptor")
     localStorage.clear();
     this.router.navigate(['/']);
   }

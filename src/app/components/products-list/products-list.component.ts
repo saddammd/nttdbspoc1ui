@@ -98,41 +98,53 @@ export class ProductsListComponent implements OnInit {
     }
 
     getUserRoles(){
-      if(this.loginService.loginvalues.username!=null){
+      if(localStorage.getItem('username') !=null){
       this.getloginUserRoles();
         }
-        else if(this.loginService.loginvalues.username ==null){
+        else if(localStorage.getItem('username') == null){
           this.getGoogleUserRoles();
         }
      }
 
   getloginUserRoles(){
     console.log(0);
-    this.rolesService.getUserRoles(this.loginService.loginvalues.username).subscribe(
+    this.rolesService.getUserRoles(localStorage.getItem('username')).subscribe(
       result=>{ 
         this.roles = result;
         console.log(1);
+        console.log(this.roles);
+        if(this.roles.length>0){
         this.sortedRoles = this.roles.sort(this.compare);
         console.log(2);
         this.maxRoleValue = this.sortedRoles[this.sortedRoles.length-1];
+        }
+        else{
+          this.maxRoleValue = result[0];
+        }
         console.log(3);
-        console.log("max value is" +this.maxRoleValue.roleId);
+        console.log("max value is" +this.maxRoleValue);
         }
     );
   }
 
   getGoogleUserRoles(){
-    this.loginService.loginvalues.username = this.loginService.loggedInUseremail;
     console.log(0);
-    this.rolesService.getUserRoles(this.loginService.loginvalues.username).subscribe(
+    this.rolesService.getUserRoles(localStorage.getItem('username')).subscribe(
       result=>{ 
         this.roles = result;
-        console.log("roles" +this.roles);
+        console.log(1);
+        console.log(this.roles);
+        if(this.roles.length>0){
         this.sortedRoles = this.roles.sort(this.compare);
         console.log(2);
-        this.maxRoleValue = this.sortedRoles[this.sortedRoles.length-1];  
+        this.maxRoleValue = this.sortedRoles[this.sortedRoles.length-1];
+        }
+        else{
+          this.maxRoleValue = result[0];
+        }
         console.log(3);
-        console.log("max value is" +this.maxRoleValue.roleId); 
+        console.log("max value is" +this.maxRoleValue);
+        
         }
     );
   }
@@ -165,9 +177,12 @@ export class ProductsListComponent implements OnInit {
 
    logout(){
      localStorage.removeItem('token');
+     localStorage.removeItem('username');
+     this.loginService.loginvalues.username = null;
+     this.loginService.loginvalues.password = null;
      this.authService.signOut();
      this.router.navigate(['/login']);
-   }
+    }
 
    compare(a:Roles, b:Roles) {
     if ( a.roleId < b.roleId ){

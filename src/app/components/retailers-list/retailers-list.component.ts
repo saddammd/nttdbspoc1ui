@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SocialAuthService } from 'angularx-social-login';
 import { AddRetailers } from 'src/app/classes/add-retailers';
 import { EditRetailers } from 'src/app/classes/edit-retailers';
 import { Retailers } from 'src/app/classes/retailers';
@@ -15,8 +16,13 @@ import { RolesService } from 'src/app/services/roles.service';
 })
 export class RetailersListComponent implements OnInit {
 
-  constructor(private retailersService: RetailersService, private route: ActivatedRoute,
-    private loginService:LoginService, private rolesService:RolesService) { }
+  constructor(
+    private retailersService: RetailersService, 
+    private route: ActivatedRoute,
+    private loginService:LoginService, 
+    private rolesService:RolesService,
+    private authService: SocialAuthService,
+    private router: Router) { }
 
   retailersArray: Retailers;
   retailer: Retailers = new Retailers();
@@ -125,7 +131,7 @@ export class RetailersListComponent implements OnInit {
   }
 
   getUserRoles(){
-    this.rolesService.getUserRoles(this.loginService.loginvalues.username).subscribe(
+    this.rolesService.getUserRoles(localStorage.getItem('username')).subscribe(
       result=>{ 
         
         this.roles = result;
@@ -141,7 +147,13 @@ export class RetailersListComponent implements OnInit {
 
 
 logout(){
-  localStorage.removeItem('token');
+     localStorage.removeItem('token');
+     localStorage.removeItem('username');
+     this.authService.signOut();
+     this.loginService.loginvalues.password = null;
+     this.loginService.loginvalues.username = null;
+     this.router.navigate(['/login']);
+     
 }
 
 

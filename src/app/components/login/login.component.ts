@@ -45,17 +45,21 @@ isLogged: boolean;
           this.token = this.socialUser.idToken;
           localStorage.setItem('token', this.token);
           this.isLogged = true;
-          this.loginService.loggedInUseremail = this.userLogged.email;
+          localStorage.setItem('username', this.userLogged.email);
           if(this.error==null){
             this.router.navigate(['/']);
           }
      
         error=>{
-          this.error=error;        
+          console.log(9);
+          this.error=error;
+          console.log(10);        
         }      
        });
       if(this.error==null){
+        console.log(11);
         this.router.navigate(['/']);
+        console.log(12);
       }
     }
 
@@ -77,6 +81,7 @@ isLogged: boolean;
         response=>{
         this.token=response;
         localStorage.setItem('token', this.token);
+        localStorage.setItem('username', this.loginService.loginvalues.username);
         if(this.error==null){
           this.router.navigate(['/']);
         }

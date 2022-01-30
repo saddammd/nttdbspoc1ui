@@ -1,9 +1,9 @@
 export const environment = {
   production: true,
-  usersbaseUrl: 'https://nttdbspoc1.herokuapp.com/poc/',
-  productsbaseUrl: 'https://nttdbspoc1.herokuapp.com/poc/products',
-  registerbaseUrl: 'https://nttdbspoc1.herokuapp.com/poc/register',
-  retailersbaseUrl: 'https://nttdbspoc1.herokuapp.com/poc/retailers/',
-  rolesbaseUrl: 'https://nttdbspoc1.herokuapp.com/poc/userRoles/',
-  loginbaseUrl: 'https://nttdbspoc1.herokuapp.com/poc/login',
+  usersbaseUrl: 'http://3.109.194.186.nip.io/poc/',
+  productsbaseUrl: 'http://3.109.194.186.nip.io/poc/products',
+  registerbaseUrl: 'http://3.109.194.186.nip.io/poc/register',
+  retailersbaseUrl: 'http://3.109.194.186.nip.io/poc/retailers/',
+  rolesbaseUrl: 'http://3.109.194.186.nip.io/poc/userRoles/',
+  loginbaseUrl: 'http://3.109.194.186.nip.io/poc/login',
 };
